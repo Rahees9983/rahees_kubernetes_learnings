@@ -18,7 +18,7 @@ spec:
         app: akki
     spec:
       containers:
-      - image: nginx:1.24
+      - image: nginx
         name: nginx
         resources: {}
 status: {}
