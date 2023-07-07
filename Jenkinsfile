@@ -26,7 +26,7 @@ pipeline{
                 }  
             }
         }
-    stages{
+    stage{
         script{
             withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_password'), string(credentialsId: 'docker_username', variable: 'docker_username')]) {
                      sh '''
