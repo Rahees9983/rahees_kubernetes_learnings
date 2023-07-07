@@ -68,10 +68,31 @@ pipeline{
                 }
             }
         }
+
+    stage('Deploying application on k8s cluster') {
+            steps {
+               script{
+                   kubeconfig(credentialsId: 'pankaj-k8s-kube-config', serverUrl: 'https://10.128.0.31:6443') {
+                        dir('kubernetes/') {
+                          sh 'helm upgrade --install --set image.repository="34.133.208.85:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ ' 
+                        }
+                    }
+               }
+            }
+        }
+    // stage('Hello'){
+    //         steps{
+    //             script{
+    //                 kubeconfig(credentialsId: 'pankaj-k8s-kube-config', serverUrl: 'https://10.128.0.31:6443'){
+    //                     sh 'kubectl get no'
+    //                     }
+    //             }
+    //         }
+    //     }
     }
-     post {
-		always {
-			mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "khanrahees333@gmail.com";  
-		 }
-	   }
+    //  post {
+	// 	always {
+	// 		mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "khanrahees333@gmail.com";  
+	// 	 }
+	//    }
 }
